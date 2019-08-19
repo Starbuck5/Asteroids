@@ -1,4 +1,4 @@
-[?, ?, 8, true, true]
+[1920, 1080, 8, true, True]
 [3000, 3000, 3000, 3000, 3000]
 [sup, sup, sup, sup, sup]
 [?, ?, 8, true, true]

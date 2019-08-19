@@ -1,51 +1,77 @@
-titlez = "Asteroids First Time Setup" #title
-back = "#0A82FF" #hexadecimal color
-
 import pygame
-from tkinter import *
-from pgx import *
+from pgx import Texthelper
+from pgx import InputGetter
+from pgx import collect_inputs
+from pgx import AllEvents
+from pgx import filehelper
+from pgx import loadImage
+from pgx import platform
 
-window = Tk()
-window.wm_title(titlez)
-window.configure(bg=back)
-height=300
-width=400
-window.minsize(height=height, width=width)
-window.maxsize(height=height, width=width)
+def setup():
+    pygame.init()
 
-mainlabel = Label(window, text="Is this your monitor's correct resolution?", bg=back)
-mainlabel.place(x=20, y=20)
-sublabel1 = Label(window, text="If not, choose from the drop down menu", bg=back)
-sublabel1.place(x=20, y=40)
-sublabel2 = Label(window, text="Then press 'set resolution'", bg=back)
-sublabel2.place(x=20, y=60)
+    scrInfo = pygame.display.Info()
+    suggestedRes = scrInfo.current_w, scrInfo.current_h
+    if suggestedRes[0] < 0 or platform.system() == "Darwin":
+        suggestedRes = pygame.display.list_modes()[0]
+    
+    widthBox = InputGetter([(110,75), str(suggestedRes[0]), 1.5], "int")
+    heightBox = InputGetter([(230,75), str(suggestedRes[1]), 1.5], "int")
 
-pygame.display.init()
-screens = pygame.display.list_modes()
-default_screen = screens[0]
-pygame.display.quit()
+    #logo = loadImage("Assets\\images\\earth2.png")
+    #logo.set_colorkey((255,0,0))
+    #pygame.display.set_icon(logo)
+    pygame.display.set_caption("Asteroids First Time Setup")
+    clock = pygame.time.Clock()
+    screen = pygame.display.set_mode([600, 450])
+    
+    Texthelper.width = 600
+    Texthelper.height = 450
+    Texthelper.scalar = 1.5
+    Texthelper.SAFEASPECT = (4,3)
+    
+    full = True
 
-tkvar = StringVar(window)
-tkvar.set(default_screen)
-selector_box = OptionMenu(window, tkvar, *screens)
-selector_box.place(x=250, y=30)
+    color = (0,0,0)
 
-def set_resolution():
-    target_resolution = tkvar.get()
-    target_resolution = list(target_resolution)
-    target_resolution.remove("(")
-    target_resolution.remove(")")
-    target_resolution = "".join(target_resolution)
-    target_resolution = target_resolution.split(", ")
 
-    contents = filehelper.get(0)
-    contents[0] = target_resolution[0]
-    contents[1] = target_resolution[1]
-    filehelper.set(contents, 0)
-     
-    window.destroy()
+    running = True
+    while running:
+        clock.tick(100)
+        screen.fill(color)
 
-file_save = Button(text="Set Resolution", command=set_resolution)
-file_save.place(relx=0.4, rely=0.9)
+        Texthelper.write(screen, [("center",20), "Welcome to Asteroids", 1.4])
+        Texthelper.write(screen, [("center", 50), "Resolution reported by your system:", 1])
+        widthBox.update(screen)
+        Texthelper.write(screen, [(190, 75), "by", 1.5])
+        heightBox.update(screen)
+        Texthelper.write(screen, [("center", 110), "Please change to your desired resolution", 0.9])
 
-window.mainloop()
+        Texthelper.write(screen, [(50, 170), "Fullscreen:", 1.5])
+        if Texthelper.writeButton(screen, [(240, 170), str(full), 1.5]):
+            full = not full
+        Texthelper.write(screen, [(2, 200), "Note: If you are going to do fullscreen,", 1])
+        Texthelper.write(screen, [(2, 215), "the resolution set should be the same", 1])
+        Texthelper.write(screen, [(27, 230), "as your monitors resolution", 1])
+
+        if Texthelper.writeButton(screen, [("center", 270), "Continue", 1.25]):
+            contents = filehelper.get(0)
+            contents[0] = widthBox.getText()
+            contents[1] = heightBox.getText()
+            contents[4] = full
+            filehelper.set(contents, 0)
+            running = False
+
+        collect_inputs()
+
+        pygame.display.flip()
+        for event in AllEvents.TICKINPUT:
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                raise SystemExit
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    setup()

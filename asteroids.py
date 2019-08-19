@@ -2,6 +2,8 @@ import pygame
 import math
 import random
 
+from pgx import *
+
 def printer(ship_pointlist, object_list, color, scalar3, scalar2, scalar1, scalarscalar): #prints the object
     screen.fill(color)
     for i in range(int(len(object_list)/8)): 
@@ -66,10 +68,6 @@ def printer(ship_pointlist, object_list, color, scalar3, scalar2, scalar1, scala
             pygame.draw.aalines(screen, (255,255,255), True, asteroid1, 4)
 
 
-#brings up functions for use without cluttering main file
-from pgx import *
-
-
 def objecthandler(object_list, width, height):
     # objects [xpos, ypos, xmom, ymom, type, serial number, time left (negative = dead), perishable (True or false)]
     if object_list:
@@ -123,15 +121,15 @@ def asteroidsplitter(scalarscalar, object_list, i, listed_asteroids):
                         object_list[3+(i * 8)]+((random.randint(round(-10*scalarscalar), round(10*scalarscalar)))/15), listed_asteroids[random.randint(0, listed_count)], "N/A", 1, False]
     return printerlist_add
 
+explosion1 = pygame.mixer.Sound(handlePath("assets\\sounds\\bomb1.wav"))
+explosion2 = pygame.mixer.Sound(handlePath("assets\\sounds\\bomb2.wav"))
+explosion1.set_volume(0.05)
+explosion2.set_volume(0.05)
+
 def explosion_sounds():
-    explosion1 = pygame.mixer.Sound(handlePath("Assets\\Bomb1.wav"))
-    explosion2 = pygame.mixer.Sound(handlePath("Assets\\Bomb2.wav"))
-    explosion1.set_volume(0.05)
-    explosion2.set_volume(0.05)
-    explosion_picker = random.randint(0,1)
-    if explosion_picker == 0:
+    if random.randint(0,1) == 0:
         explosion1.play()
-    if explosion_picker == 1:
+    else:
         explosion2.play()
 
 
@@ -149,6 +147,9 @@ def main():
     #sets adjustable settings
     width = int(file_settings[0])
     height = int(file_settings[1])
+    if platform.system() == "Darwin":
+        width = width//2
+        height = height//2
     max_asteroids = int(file_settings[2])
     ship_drag = file_settings[3]
     if ship_drag == "true":
@@ -202,14 +203,14 @@ def main():
     # pygame setup
     pygame.init()
     pygame.display.set_caption("Asteroids")
-    logo = loadImage("Assets\\asteroid1-small.png")
+    logo = loadImage("assets\\asteroid.png")
     pygame.display.set_icon(logo)
     if width == 0 or height == 0:
         screen_sizes = pygame.display.list_modes()
         screen_sizes = screen_sizes[0]
         width = screen_sizes[0]
         height = screen_sizes[1]
-    if file_settings[4] == "true":
+    if file_settings[4]:
         screen = pygame.display.set_mode([width, height], pygame.NOFRAME | pygame.FULLSCREEN)
     else:
         screen = pygame.display.set_mode([width, height])
@@ -255,7 +256,7 @@ def main():
         if status == "menuinit":
             # sound
             pygame.mixer.init()
-            menu_music = pygame.mixer.Sound(handlePath("Assets\\AsteroidsTitle.wav"))
+            menu_music = pygame.mixer.Sound(handlePath("assets\\sounds\\asteroidstitle.wav"))
             menu_music.play(-1)
             menu_music.set_volume(0.4)
             menu_music_fadeout = menu_music_fadeout_OG
@@ -399,41 +400,32 @@ def main():
             pygame.mouse.set_visible(True)
             alien_alarm.stop()
             alientimer = 0            
-            text_input = [("center", 540-136), "Paused", 6]
-            Texthelper.write(screen, text_input)
+            Texthelper.write(screen, [("center", 540-136), "Paused", 6])
+            pygame.display.flip()
+            pygame.time.wait(200) 
+            Texthelper.write(screen, [("center", 540-55), "Resume", 2])
             pygame.display.flip()
             pygame.time.wait(200)
-            text_input = [("center", 540-55), "Resume", 2]
-            Texthelper.write(screen, text_input)
-            pygame.display.flip()
-            pygame.time.wait(200)
-            text_input = [("center", 540-20), "Restart", 2]
-            Texthelper.write(screen, text_input)
+            Texthelper.write(screen, [("center", 540-20), "Restart", 2])
             pygame.display.flip()
             pygame.time.wait(200)            
-            text_input = [("center", 540+15), "Quit to desktop", 2]
-            Texthelper.write(screen, text_input)
+            Texthelper.write(screen, [("center", 540+15), "Quit to desktop", 2])
             pygame.display.flip()
             pygame.time.wait(200)
-            text_input = [("center", 540+50), "Quit to menu", 2]
-            Texthelper.write(screen, text_input)
+            Texthelper.write(screen, [("center", 540+50), "Quit to menu", 2])
             pygame.display.flip()
             status = "paused"
 
         if status == "paused":
-            text_input = [("center", 540-55), "Resume", 2]
-            if Texthelper.writeButton(screen, text_input):
+            if Texthelper.writeButton(screen, [("center", 540-55), "Resume", 2]):
                 pygame.mouse.set_visible(False)
                 status = "game"
-            text_input = [("center", 540-20), "Restart", 2]
-            if Texthelper.writeButton(screen, text_input):
+            if Texthelper.writeButton(screen, [("center", 540-20), "Restart", 2]):
                 status = "gameinit"   
-            text_input = [("center", 540+15), "Quit to desktop", 2]
-            if Texthelper.writeButton(screen, text_input):
+            if Texthelper.writeButton(screen, [("center", 540+15), "Quit to desktop", 2]):
                 pygame.quit()
                 raise SystemExit
-            text_input = [("center", 540+50), "Quit to menu", 2]
-            if Texthelper.writeButton(screen, text_input):
+            if Texthelper.writeButton(screen, [("center", 540+50), "Quit to menu", 2]):
                 status = "menuinit"
             pygame.display.flip()
 
@@ -486,35 +478,28 @@ def main():
             previous_inputvar = inputvar #helps with distinct keyclicks
 
         if status == "gameoverinit":            
-            text_input = [("center", 540-136), "Game over", 6]
-            Texthelper.write(screen, text_input)            
+            Texthelper.write(screen, [("center", 540-136), "Game over", 6])            
             pygame.display.flip()
             pygame.time.wait(200)
-            text_input = [("center", 540-55), "Play again", 2]
-            Texthelper.write(screen, text_input)
+            Texthelper.write(screen, [("center", 540-55), "Play again", 2])
             pygame.display.flip()
             pygame.time.wait(200)
-            text_input = [("center", 540-20), "Quit to desktop", 2]
-            Texthelper.write(screen, text_input)
+            Texthelper.write(screen, [("center", 540-20), "Quit to desktop", 2])
             pygame.display.flip()
             pygame.time.wait(200)
-            text_input = [("center", 540+15), "Quit to menu", 2]
-            Texthelper.write(screen, text_input)
+            Texthelper.write(screen, [("center", 540+15), "Quit to menu", 2])
             pygame.display.flip()
             status = "gameover"
 
         if status == "gameover":
-            text_input = [("center", 540-55), "Play again", 2]
-            if Texthelper.writeButton(screen, text_input):
+            if Texthelper.writeButton(screen, [("center", 540-55), "Play again", 2]):
                 status = "gameinit"
                 
-            text_input = [("center", 540-20), "Quit to desktop", 2]
-            if Texthelper.writeButton(screen, text_input):
+            if Texthelper.writeButton(screen, [("center", 540-20), "Quit to desktop", 2]):
                 pygame.quit()
                 raise SystemExit
             
-            text_input = [("center", 540+15), "Quit to menu", 2]
-            if Texthelper.writeButton(screen, text_input):
+            if Texthelper.writeButton(screen, [("center", 540+15), "Quit to menu", 2]):
                 status = "menuinit"
             pygame.display.flip()
 
@@ -601,16 +586,16 @@ def main():
             # sound
             beat_timer = 250
             max_beat_timer = beat_timer
-            beat1 = pygame.mixer.Sound(handlePath("Assets\\Beat1loud.wav"))
+            beat1 = pygame.mixer.Sound(handlePath("assets\\sounds\\beat1.wav"))
             beat1.set_volume(0.9)
-            beat2 = pygame.mixer.Sound(handlePath("Assets\\Beat2loud.wav"))
+            beat2 = pygame.mixer.Sound(handlePath("assets\\sounds\\beat2.wav"))
             beat2.set_volume(0.9)
-            missilesound = pygame.mixer.Sound(handlePath("Assets\\missilesound.wav"))
+            missilesound = pygame.mixer.Sound(handlePath("assets\\sounds\\missile.wav"))
             missilesound.set_volume(0.35)
-            enginesound = pygame.mixer.Sound(handlePath("Assets\\enginesoundloud.wav"))
+            enginesound = pygame.mixer.Sound(handlePath("assets\\sounds\\engine.wav"))
             enginesound.set_volume(0.2)
             timer1 = 0
-            alien_alarm = pygame.mixer.Sound(handlePath("Assets\\alien_alarm.wav"))
+            alien_alarm = pygame.mixer.Sound(handlePath("assets\\sounds\\alien.wav"))
             alien_alarm.set_volume(0.10)
             alientimer = 0
 
@@ -1013,6 +998,7 @@ def main():
 
 #checks if it needs to run setupper
 if filehelper.get(0)[0] == "?":
-    from setupper import *
+    import setupper
+    setupper.setup()
     
 main()
