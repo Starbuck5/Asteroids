@@ -263,16 +263,16 @@ def main():
             pygame.mouse.set_visible(True)
             countervar = 0
             object_list2 = []
-            while countervar < random.randint((max_asteroids*2)-2, max_asteroids * 2): #while there are less asteroids than a set random number of aseroids, continue this loop
-                selector_man = random.randint(1,2) #selector_man either = 1 or 2
-                if selector_man == 1: #if selector_man = 1, then create random sized asteroids in random location
+            while countervar < random.randint((max_asteroids*2)-2, max_asteroids * 2):
+                selector_man = random.randint(1,2)
+                if selector_man == 1:
                     object_list_add = [random.randint(0, width), random.randint(0, height), random.randint(-1 * max_asteroid_spd, max_asteroid_spd)/600, random.randint(-1 * max_asteroid_spd, max_asteroid_spd)/600]
                     object_list_add += [l_asteroids[random.randint(0, len(l_asteroids)-1)], 0, 1, False]
-                if selector_man == 2: #if selector_man = 2, then create random sized asteroids in random location
+                if selector_man == 2:
                     object_list_add = [random.randint(0, width), random.randint(0, height), random.randint(-1 * max_asteroid_spd, max_asteroid_spd)/600, random.randint(-1 * max_asteroid_spd, max_asteroid_spd)/600]
                     object_list_add += [m_asteroids[random.randint(0, len(m_asteroids)-1)], 0, 1, False]                    
-                countervar += 1 #the asteroid created is counted
-                object_list2 += object_list_add #add the asteroid to existing object list of asteroids
+                countervar += 1
+                object_list2 += object_list_add
             status = "menu" 
 
         if status == "menu": #if game is in menu
@@ -280,7 +280,7 @@ def main():
             objecthandler(object_list2, width, height)
             ship_pointlist = [[50, 50 - 30], [50 + 15, 50 + 10], [50, 50], [50 - 15, 50 + 10]]
             temp_scalar2 = 1 #not necessary, just defaults
-            temp_scalar1 = 1 #so the printer doesn't have a fit
+            temp_scalar1 = 1
             printer(ship_pointlist, object_list2, color, scalar3, temp_scalar2, temp_scalar1, scalarscalar)
 
             # actual text
@@ -289,31 +289,25 @@ def main():
             
             # buttons
             #Texthelper.last_click = click
-            #click = new_mouse2()
             
-            text_input = [(410, 540-50), "Play", 3]
-            if Texthelper.writeButton(screen, text_input):
+            if Texthelper.writeButton(screen, [(410, 540-50), "Play", 3]):
                 status = "gameinit"
                 menu_music.fadeout(menu_music_fadeout)
-            text_input = [(410, 550), "Quit to desktop", 3]
-            if Texthelper.writeButton(screen, text_input): #if "quit to desktop" is clicked           
-                pygame.quit() #stop the program
-                raise SystemExit #close the program
-            text_input = [(960-550, 540+70), "Options", 3] #display "options" on menu
-            if Texthelper.writeButton(screen, text_input): #if "options" is clicked
-                status = "optionsinit" #initialize options page
-                back_selector = "menuinit" #used in options page 
-                menu_music.fadeout(menu_music_fadeout) #stop music
-            text_input = [(960-550, 540+130), "Tutorial", 3] #display "tutorial" on menu
-            if Texthelper.writeButton(screen, text_input): #if "tutorial" clicked
+            if Texthelper.writeButton(screen, [(960-550, 540+10), "Tutorial", 3]):
                 status = "tutorial"
                 menu_music.fadeout(menu_music_fadeout)
-            text_input = [(960-550, 540+190), "High Scores", 3]
-            if Texthelper.writeButton(screen, text_input):
+            if Texthelper.writeButton(screen, [(960-550, 540+70), "Options", 3]):
+                status = "optionsinit"
+                back_selector = "menuinit"
+                menu_music.fadeout(menu_music_fadeout)
+            if Texthelper.writeButton(screen, [(960-550, 540+130), "High Scores", 3]):
                 status = "menuscorescreen"
                 menu_music.fadeout(menu_music_fadeout)
                 high_scores = filehelper.get(1)
                 high_initials = filehelper.get(2)
+            if Texthelper.writeButton(screen, [(410, 550+190), "Quit to desktop", 3]):          
+                pygame.quit()
+                raise SystemExit
             pygame.display.flip()
 
         if status == "menuscorescreen":
@@ -409,10 +403,10 @@ def main():
             Texthelper.write(screen, [("center", 540-20), "Restart", 2])
             pygame.display.flip()
             pygame.time.wait(200)            
-            Texthelper.write(screen, [("center", 540+15), "Quit to desktop", 2])
+            Texthelper.write(screen, [("center", 540+15), "Quit to menu", 2])
             pygame.display.flip()
-            pygame.time.wait(200)
-            Texthelper.write(screen, [("center", 540+50), "Quit to menu", 2])
+            pygame.time.wait(200)            
+            Texthelper.write(screen, [("center", 540+50), "Quit to desktop", 2])
             pygame.display.flip()
             status = "paused"
 
@@ -421,12 +415,12 @@ def main():
                 pygame.mouse.set_visible(False)
                 status = "game"
             if Texthelper.writeButton(screen, [("center", 540-20), "Restart", 2]):
-                status = "gameinit"   
-            if Texthelper.writeButton(screen, [("center", 540+15), "Quit to desktop", 2]):
+                status = "gameinit"
+            if Texthelper.writeButton(screen, [("center", 540+15), "Quit to menu", 2]):
+                status = "menuinit"
+            if Texthelper.writeButton(screen, [("center", 540+50), "Quit to desktop", 2]):
                 pygame.quit()
                 raise SystemExit
-            if Texthelper.writeButton(screen, [("center", 540+50), "Quit to menu", 2]):
-                status = "menuinit"
             pygame.display.flip()
 
         if status == "highscorecheck":
@@ -484,23 +478,23 @@ def main():
             Texthelper.write(screen, [("center", 540-55), "Play again", 2])
             pygame.display.flip()
             pygame.time.wait(200)
-            Texthelper.write(screen, [("center", 540-20), "Quit to desktop", 2])
+            Texthelper.write(screen, [("center", 540-20), "Quit to menu", 2])
             pygame.display.flip()
             pygame.time.wait(200)
-            Texthelper.write(screen, [("center", 540+15), "Quit to menu", 2])
+            Texthelper.write(screen, [("center", 540+15), "Quit to desktop", 2])
             pygame.display.flip()
             status = "gameover"
 
         if status == "gameover":
             if Texthelper.writeButton(screen, [("center", 540-55), "Play again", 2]):
                 status = "gameinit"
-                
-            if Texthelper.writeButton(screen, [("center", 540-20), "Quit to desktop", 2]):
+                            
+            if Texthelper.writeButton(screen, [("center", 540-20), "Quit to menu", 2]):
+                status = "menuinit"
+
+            if Texthelper.writeButton(screen, [("center", 540+15), "Quit to desktop", 2]):
                 pygame.quit()
                 raise SystemExit
-            
-            if Texthelper.writeButton(screen, [("center", 540+15), "Quit to menu", 2]):
-                status = "menuinit"
             pygame.display.flip()
 
         if status == "tutorial":
