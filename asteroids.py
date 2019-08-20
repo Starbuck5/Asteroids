@@ -152,9 +152,9 @@ def main():
         height = height//2
     max_asteroids = int(file_settings[2])
     ship_drag = file_settings[3]
-    if ship_drag == "true":
+    if ship_drag:
         drag = [1, 5]
-    if ship_drag != "true":
+    else:
         drag = []
 
     #scaling
@@ -322,14 +322,15 @@ def main():
         if status == "optionsinit":
             edit_selector = ""
             previous_ticks = pygame.time.get_ticks()
-            file_settings2 = file_settings[0:]
+            file_settings2 = file_settings.copy()
             
             optionwidth = InputGetter([(960-200, 240), str(file_settings2[0]), 3], "int")
             optionheight = InputGetter([(960, 240), str(file_settings2[1]), 3], "int")
             optionmaxasteroids = InputGetter([(960-150, 310), str(file_settings2[2]), 3], "int")
-            optiondrag = InputGetter([(960-200, 380), str(file_settings2[3]), 3], "str")
-            optionfullscreen = InputGetter([(960-200, 450), str(file_settings2[4]), 3], "str")
-            optionlist = [optionwidth, optionheight, optionmaxasteroids, optiondrag, optionfullscreen]
+            #optiondrag = InputGetter([(960-200, 380), str(file_settings2[3]), 3], "str")
+            #optionfullscreen = InputGetter([(960-200, 450), str(file_settings2[4]), 3], "str")
+            #optionlist = [optionwidth, optionheight, optionmaxasteroids, optiondrag, optionfullscreen]
+            optionlist = [optionwidth, optionheight, optionmaxasteroids]
             
             status = "optionspage"
 
@@ -351,17 +352,16 @@ def main():
             Texthelper.write(screen, text_input)
             optionmaxasteroids.update(screen)
 
-            text_input = [(960-600, 380), "Ship Drag", 3]
-            Texthelper.write(screen, text_input)
-            text_input = [(960-450, 420), "True or false", 1.5]
-            Texthelper.write(screen, text_input)           
-            optiondrag.update(screen)
+            Texthelper.write(screen, [(960-600, 380), "Ship Drag", 3])
+            Texthelper.write(screen, [(960-450, 420), "True or false", 1.5])           
+            if Texthelper.writeButton(screen, [(960-200, 380), str(file_settings2[3]), 3]):
+                file_settings2[3] = not file_settings2[3]
 
-            text_input = [(960-600, 450), "Fullscreen", 3]
-            Texthelper.write(screen, text_input)
-            text_input = [(960-450, 490), "True or false", 1.5]
-            Texthelper.write(screen, text_input)            
-            optionfullscreen.update(screen)
+            Texthelper.write(screen, [(960-600, 450), "Fullscreen", 3])
+            Texthelper.write(screen, [(960-450, 490), "True or false", 1.5])            
+            if Texthelper.writeButton(screen, [(960-200, 450), str(file_settings2[4]), 3]):
+                file_settings2[4] = not file_settings2[4]
+                        
 
             for i in range(len(optionlist)):
                 savinghelper = optionlist[i].getText()
