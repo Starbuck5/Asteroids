@@ -121,8 +121,8 @@ def asteroidsplitter(scalarscalar, object_list, i, listed_asteroids):
                         object_list[3+(i * 8)]+((random.randint(round(-10*scalarscalar), round(10*scalarscalar)))/15), listed_asteroids[random.randint(0, listed_count)], "N/A", 1, False]
     return printerlist_add
 
-explosion1 = pygame.mixer.Sound(handlePath("assets\\sounds\\bomb1.wav"))
-explosion2 = pygame.mixer.Sound(handlePath("assets\\sounds\\bomb2.wav"))
+explosion1 = pygame.mixer.Sound(handlePath("assets\\sounds\\bomb1.ogg"))
+explosion2 = pygame.mixer.Sound(handlePath("assets\\sounds\\bomb2.ogg"))
 explosion1.set_volume(0.05)
 explosion2.set_volume(0.05)
 
@@ -256,7 +256,7 @@ def main():
         if status == "menuinit":
             # sound
             pygame.mixer.init()
-            menu_music = pygame.mixer.Sound(handlePath("assets\\sounds\\asteroidstitle.wav"))
+            menu_music = pygame.mixer.Sound(handlePath("assets\\sounds\\asteroidstitle.ogg"))
             menu_music.play(-1)
             menu_music.set_volume(0.4)
             menu_music_fadeout = menu_music_fadeout_OG
@@ -563,16 +563,16 @@ def main():
             # sound
             beat_timer = 250
             max_beat_timer = beat_timer
-            beat1 = pygame.mixer.Sound(handlePath("assets\\sounds\\beat1.wav"))
+            beat1 = pygame.mixer.Sound(handlePath("assets\\sounds\\beat1.ogg"))
             beat1.set_volume(0.9)
-            beat2 = pygame.mixer.Sound(handlePath("assets\\sounds\\beat2.wav"))
+            beat2 = pygame.mixer.Sound(handlePath("assets\\sounds\\beat2.ogg"))
             beat2.set_volume(0.9)
-            missilesound = pygame.mixer.Sound(handlePath("assets\\sounds\\missile.wav"))
+            missilesound = pygame.mixer.Sound(handlePath("assets\\sounds\\missile.ogg"))
             missilesound.set_volume(0.35)
-            enginesound = pygame.mixer.Sound(handlePath("assets\\sounds\\engine.wav"))
+            enginesound = pygame.mixer.Sound(handlePath("assets\\sounds\\engine.ogg"))
             enginesound.set_volume(0.2)
             timer1 = 0
-            alien_alarm = pygame.mixer.Sound(handlePath("assets\\sounds\\alien.wav"))
+            alien_alarm = pygame.mixer.Sound(handlePath("assets\\sounds\\alien.ogg"))
             alien_alarm.set_volume(0.10)
             alientimer = 0
 
