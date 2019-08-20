@@ -1,4 +1,0 @@
-[?, ?, 8, True, True]
-[6360, 5930, 3000, 3000, 3000]
-[cch, cch, sup, sup, sup]
-[?, ?, 8, True, True]
