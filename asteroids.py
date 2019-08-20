@@ -135,10 +135,8 @@ def explosion_sounds():
 
 def score_printer(high_scores, high_initials):
     for i in range(len(high_initials)):
-        text_input = [(740, 200+i*70), str(high_scores[i]), 4]
-        Texthelper.write(screen, text_input)
-        text_input = [(1020, 200+i*70), str(high_initials[i]), 4]
-        Texthelper.write(screen, text_input) 
+        Texthelper.write(screen, [(740, 200+i*70), str(high_scores[i]), 4])
+        Texthelper.write(screen, [(1020, 200+i*70), str(high_initials[i]), 4]) 
 
 def main():
     global screen
@@ -284,28 +282,25 @@ def main():
             printer(ship_pointlist, object_list2, color, scalar3, temp_scalar2, temp_scalar1, scalarscalar)
 
             # actual text
-            text_input = [(360, 540-200), "Asteroids", 10]
-            Texthelper.write(screen, text_input)
+            Texthelper.write(screen, [(360, 340), "Asteroids", 10])
             
-            # buttons
-            #Texthelper.last_click = click
-            
-            if Texthelper.writeButton(screen, [(410, 540-50), "Play", 3]):
+            # buttons            
+            if Texthelper.writeButton(screen, [(410, 490), "Play", 3]):
                 status = "gameinit"
                 menu_music.fadeout(menu_music_fadeout)
-            if Texthelper.writeButton(screen, [(960-550, 540+10), "Tutorial", 3]):
+            if Texthelper.writeButton(screen, [(410, 550), "Tutorial", 3]):
                 status = "tutorial"
                 menu_music.fadeout(menu_music_fadeout)
-            if Texthelper.writeButton(screen, [(960-550, 540+70), "Options", 3]):
+            if Texthelper.writeButton(screen, [(410, 610), "Options", 3]):
                 status = "optionsinit"
                 back_selector = "menuinit"
                 menu_music.fadeout(menu_music_fadeout)
-            if Texthelper.writeButton(screen, [(960-550, 540+130), "High Scores", 3]):
+            if Texthelper.writeButton(screen, [(410, 670), "High Scores", 3]):
                 status = "menuscorescreen"
                 menu_music.fadeout(menu_music_fadeout)
                 high_scores = filehelper.get(1)
                 high_initials = filehelper.get(2)
-            if Texthelper.writeButton(screen, [(410, 550+190), "Quit to desktop", 3]):          
+            if Texthelper.writeButton(screen, [(410, 740), "Quit to desktop", 3]):          
                 pygame.quit()
                 raise SystemExit
             pygame.display.flip()
@@ -323,9 +318,9 @@ def main():
             previous_ticks = pygame.time.get_ticks()
             file_settings2 = file_settings.copy()
             
-            optionwidth = InputGetter([(960-200, 240), str(file_settings2[0]), 3], "int")
+            optionwidth = InputGetter([(760, 240), str(file_settings2[0]), 3], "int")
             optionheight = InputGetter([(960, 240), str(file_settings2[1]), 3], "int")
-            optionmaxasteroids = InputGetter([(960-150, 310), str(file_settings2[2]), 3], "int")
+            optionmaxasteroids = InputGetter([(810, 310), str(file_settings2[2]), 3], "int")
             optionlist = [optionwidth, optionheight, optionmaxasteroids]
             
             status = "optionspage"
@@ -333,28 +328,24 @@ def main():
         if status == "optionspage":
             screen.fill(color)
             
-            text_input = [(960-600, 140), "Options", 6]
-            Texthelper.write(screen, text_input)
-            text_input = [(960, 190), "All changes require restart", 2]
-            Texthelper.write(screen, text_input)
+            Texthelper.write(screen, [(360, 140), "Options", 6])
+            Texthelper.write(screen, [(960, 190), "All changes require restart", 2])
             Texthelper.write(screen, [(300, 800), "To edit a value click on the value and then type", 2])
-
-            text_input = [(960-600, 240), "Resolution", 3]
-            Texthelper.write(screen, text_input)            
+ 
+            Texthelper.write(screen, [(360, 240), "Resolution", 3])            
             optionwidth.update(screen)
             optionheight.update(screen)
-
-            text_input = [(960-600, 310), "Max Asteroids", 3]
-            Texthelper.write(screen, text_input)
+ 
+            Texthelper.write(screen, [(360, 310), "Max Asteroids", 3])
             optionmaxasteroids.update(screen)
 
-            Texthelper.write(screen, [(960-600, 380), "Ship Drag", 3])
-            Texthelper.write(screen, [(960-450, 420), "True or false", 1.5])           
-            if Texthelper.writeButton(screen, [(960-200, 380), str(file_settings2[3]), 3]):
+            Texthelper.write(screen, [(360, 380), "Ship Drag", 3])
+            Texthelper.write(screen, [(510, 420), "True or false", 1.5])           
+            if Texthelper.writeButton(screen, [(760, 380), str(file_settings2[3]), 3]):
                 file_settings2[3] = not file_settings2[3]
 
-            Texthelper.write(screen, [(960-600, 450), "Fullscreen", 3])
-            Texthelper.write(screen, [(960-450, 490), "True or false", 1.5])            
+            Texthelper.write(screen, [(360, 450), "Fullscreen", 3])
+            Texthelper.write(screen, [(510, 490), "True or false", 1.5])            
             if Texthelper.writeButton(screen, [(960-200, 450), str(file_settings2[4]), 3]):
                 file_settings2[4] = not file_settings2[4]
                         
@@ -367,14 +358,12 @@ def main():
                     file_settings2[i]  = savinghelper            
 
             if file_settings != file_settings2:
-                text_input = [(960, 140), "save changes", 3]
-                if Texthelper.writeButton(screen, text_input):
+                if Texthelper.writeButton(screen, [(960, 140), "save changes", 3]):
                     filehelper.set(file_settings2, 0)
                     file_settings = file_settings2[0:]
                     status = "optionsinit"
 
-            text_input = [(960-600, 900), "Reset to Defaults", 3]
-            if Texthelper.writeButton(screen, text_input):
+            if Texthelper.writeButton(screen, [(360, 900), "Reset to Defaults", 3]):
                 file_settings = filehelper.get(3)
                 filehelper.set(file_settings, 0)
                 status = "optionsinit"                    
@@ -389,31 +378,31 @@ def main():
             pygame.mouse.set_visible(True)
             alien_alarm.stop()
             alientimer = 0            
-            Texthelper.write(screen, [("center", 540-136), "Paused", 6])
+            Texthelper.write(screen, [("center", 404), "Paused", 6])
             pygame.display.flip()
             pygame.time.wait(200) 
-            Texthelper.write(screen, [("center", 540-55), "Resume", 2])
+            Texthelper.write(screen, [("center", 485), "Resume", 2])
             pygame.display.flip()
             pygame.time.wait(200)
-            Texthelper.write(screen, [("center", 540-20), "Restart", 2])
+            Texthelper.write(screen, [("center", 520), "Restart", 2])
             pygame.display.flip()
             pygame.time.wait(200)            
-            Texthelper.write(screen, [("center", 540+15), "Quit to menu", 2])
+            Texthelper.write(screen, [("center", 555), "Quit to menu", 2])
             pygame.display.flip()
             pygame.time.wait(200)            
-            Texthelper.write(screen, [("center", 540+50), "Quit to desktop", 2])
+            Texthelper.write(screen, [("center", 590), "Quit to desktop", 2])
             pygame.display.flip()
             status = "paused"
 
         if status == "paused":
-            if Texthelper.writeButton(screen, [("center", 540-55), "Resume", 2]):
+            if Texthelper.writeButton(screen, [("center", 485), "Resume", 2]):
                 pygame.mouse.set_visible(False)
                 status = "game"
-            if Texthelper.writeButton(screen, [("center", 540-20), "Restart", 2]):
+            if Texthelper.writeButton(screen, [("center", 520), "Restart", 2]):
                 status = "gameinit"
-            if Texthelper.writeButton(screen, [("center", 540+15), "Quit to menu", 2]):
+            if Texthelper.writeButton(screen, [("center", 555), "Quit to menu", 2]):
                 status = "menuinit"
-            if Texthelper.writeButton(screen, [("center", 540+50), "Quit to desktop", 2]):
+            if Texthelper.writeButton(screen, [("center", 590), "Quit to desktop", 2]):
                 pygame.quit()
                 raise SystemExit
             pygame.display.flip()
@@ -440,10 +429,8 @@ def main():
             alphabet_list = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
             printer(ship_pointlist, object_list, color, scalar3, scalar2, scalar1, scalarscalar)
 
-            text_input = [(574, 70), "High Score Achieved", 4]
-            Texthelper.write(screen, text_input)
-            text_input = [(567, 130), "Please enter your initials", 3]
-            Texthelper.write(screen, text_input)
+            Texthelper.write(screen, [(574, 70), "High Score Achieved", 4]) 
+            Texthelper.write(screen, [(567, 130), "Please enter your initials", 3])
             
             # calls a function to print out the scores
             score_printer(high_scores, high_initials)
@@ -453,9 +440,8 @@ def main():
             if len(inputvar) == 1 and inputvar != previous_inputvar:
                 if inputvar[0] ==  "back" or inputvar[0] == "delete": 
                     high_initials[score_index] = high_initials[score_index][:-1]
-            if len(high_initials[score_index]) == 3:
-                text_input = [(620, 700), "Press Enter to Continue", 3]
-                Texthelper.write(screen, text_input)
+            if len(high_initials[score_index]) == 3: 
+                Texthelper.write(screen, [(620, 700), "Press Enter to Continue", 3])
             if len(inputvar) == 1 and len(high_initials[score_index]) == 3:
                 if inputvar[0] == "enter":
                     filehelper.set(high_scores, 1)
@@ -467,27 +453,27 @@ def main():
             previous_inputvar = inputvar #helps with distinct keyclicks
 
         if status == "gameoverinit":            
-            Texthelper.write(screen, [("center", 540-136), "Game over", 6])            
+            Texthelper.write(screen, [("center", 404), "Game over", 6])            
             pygame.display.flip()
             pygame.time.wait(200)
-            Texthelper.write(screen, [("center", 540-55), "Play again", 2])
+            Texthelper.write(screen, [("center", 485), "Play again", 2])
             pygame.display.flip()
             pygame.time.wait(200)
-            Texthelper.write(screen, [("center", 540-20), "Quit to menu", 2])
+            Texthelper.write(screen, [("center", 520), "Quit to menu", 2])
             pygame.display.flip()
             pygame.time.wait(200)
-            Texthelper.write(screen, [("center", 540+15), "Quit to desktop", 2])
+            Texthelper.write(screen, [("center", 555), "Quit to desktop", 2])
             pygame.display.flip()
             status = "gameover"
 
         if status == "gameover":
-            if Texthelper.writeButton(screen, [("center", 540-55), "Play again", 2]):
+            if Texthelper.writeButton(screen, [("center", 485), "Play again", 2]):
                 status = "gameinit"
                             
-            if Texthelper.writeButton(screen, [("center", 540-20), "Quit to menu", 2]):
+            if Texthelper.writeButton(screen, [("center", 520), "Quit to menu", 2]):
                 status = "menuinit"
 
-            if Texthelper.writeButton(screen, [("center", 540+15), "Quit to desktop", 2]):
+            if Texthelper.writeButton(screen, [("center", 555), "Quit to desktop", 2]):
                 pygame.quit()
                 raise SystemExit
             pygame.display.flip()
@@ -920,12 +906,11 @@ def main():
             # scoring - big asteroid split = 20, medium asteroid split = 50, small asteroid destroy = 100, alien destroy = 200
             score_string = "score:" + str(score)
             if len(score_string) < 11:
-                for i in range(12-len(score_string)):
+                for _ in range(12-len(score_string)):
                     score_string += " "
             else:
                 score_string += " "
-            text_input = [("right", 10), score_string, 3]
-            Texthelper.write(screen, text_input)
+            Texthelper.write(screen, [("right", 10), score_string, 3])
             pygame.display.flip()
             # printer and flame and score
             
