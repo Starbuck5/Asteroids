@@ -795,4 +795,11 @@ class draw:
     def sblit(baseSurface, secondSurface, location):
         location = draw._interpretcoords(location)
         baseSurface.blit(secondSurface, location)
+
+    def polygon(surface, color, points, width = 0):
+        for i in range(len(points)):
+            points[i] = draw._interpretcoords(points[i])
+        adjusted_width = round(Texthelper.scalar * width)
+        width = adjusted_width if (adjusted_width > 0 or width == 0) else 1       
+        return pygame.draw.polygon(surface, color, points, width)
    

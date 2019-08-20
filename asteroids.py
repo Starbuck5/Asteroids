@@ -314,8 +314,7 @@ def main():
             screen.fill(color)
             score_printer(high_scores, high_initials)
             # back button
-            text_input = [(20, 20), "Back", 3]
-            if Texthelper.writeButton(screen, text_input) == True:
+            if Texthelper.writeButton(screen, [("left+20", 20), "Back", 3]):
                 status = "menuinit"
             pygame.display.flip()
 
@@ -327,9 +326,6 @@ def main():
             optionwidth = InputGetter([(960-200, 240), str(file_settings2[0]), 3], "int")
             optionheight = InputGetter([(960, 240), str(file_settings2[1]), 3], "int")
             optionmaxasteroids = InputGetter([(960-150, 310), str(file_settings2[2]), 3], "int")
-            #optiondrag = InputGetter([(960-200, 380), str(file_settings2[3]), 3], "str")
-            #optionfullscreen = InputGetter([(960-200, 450), str(file_settings2[4]), 3], "str")
-            #optionlist = [optionwidth, optionheight, optionmaxasteroids, optiondrag, optionfullscreen]
             optionlist = [optionwidth, optionheight, optionmaxasteroids]
             
             status = "optionspage"
@@ -384,9 +380,8 @@ def main():
                 status = "optionsinit"                    
                         
             # back button
-            text_input = [(20, 20), "Back", 3]
-            if Texthelper.writeButton(screen, text_input) == True:
-                status = back_selector
+            if Texthelper.writeButton(screen, [("left+20", 20), "Back", 3]):
+                status = "menuinit"
 
             pygame.display.flip()
             
@@ -456,7 +451,7 @@ def main():
             if len(inputvar) == 1 and len(inputvar[0]) == 1 and inputvar != previous_inputvar and inputvar[0] in alphabet_list:
                 high_initials[score_index] += inputvar[0]
             if len(inputvar) == 1 and inputvar != previous_inputvar:
-                if inputvar[0] ==  "back" or inputvar[0] == "delete":                    
+                if inputvar[0] ==  "back" or inputvar[0] == "delete": 
                     high_initials[score_index] = high_initials[score_index][:-1]
             if len(high_initials[score_index]) == 3:
                 text_input = [(620, 700), "Press Enter to Continue", 3]
@@ -499,64 +494,52 @@ def main():
 
         if status == "tutorial":
             screen.fill(color)
-            blockdim1 = 100 * scalarscalar
-            thickness = round(5*scalarscalar)
-            if thickness == 0:
-                thickness = 1
-            # QWE movement block
-            temp_1 = (50, 160) #positions whole block
-            temp_12 = (temp_1[0]*scalarscalar, temp_1[1]*scalarscalar)  #for scaling
-            pygame.draw.rect(screen, (255,255,255), [temp_12[0], temp_12[1], blockdim1, blockdim1], thickness) 
-            Texthelper.write(screen, [(temp_1[0]+30, temp_1[1]+20), "Q", 5])
-            Texthelper.write(screen, [(temp_1[0]+30, temp_1[1]+110), "Left", 1])
-            Texthelper.write(screen, [(temp_1[0]+7, temp_1[1]+130), "Rotation", 1])
-            pygame.draw.rect(screen, (255,255,255), [temp_12[0]+130*scalarscalar, temp_12[1], blockdim1, blockdim1], thickness) 
-            Texthelper.write(screen, [(temp_1[0]+160, temp_1[1]+20), "W", 5])
-            Texthelper.write(screen, [(temp_1[0]+143, temp_1[1]+110), "Forward", 1])            
-            pygame.draw.rect(screen, (255,255,255), [temp_12[0]+260*scalarscalar, temp_12[1], blockdim1, blockdim1], thickness) 
-            Texthelper.write(screen, [(temp_1[0]+290, temp_1[1]+20), "E", 5])
-            Texthelper.write(screen, [(temp_1[0]+284, temp_1[1]+110), "Right", 1])
-            Texthelper.write(screen, [(temp_1[0]+267, temp_1[1]+130), "Rotation", 1])            
-
+            
+            # QWE movement block            
+            draw.rect(screen, (255,255,255), [50, 160, 100, 100], 5)
+            Texthelper.write(screen, [(80, 180), "Q", 5])
+            Texthelper.write(screen, [(80, 270), "Left", 1])
+            Texthelper.write(screen, [(60, 290), "Rotation", 1])            
+            draw.rect(screen, (255,255,255), [180, 160, 100, 100], 5)
+            Texthelper.write(screen, [(210, 180), "W", 5])            
+            Texthelper.write(screen, [(193, 270), "Forward", 1])            
+            draw.rect(screen, (255,255,255), [310, 160, 100, 100], 5)            
+            Texthelper.write(screen, [(340, 180), "E", 5])            
+            Texthelper.write(screen, [(334, 270), "Right", 1])            
+            Texthelper.write(screen, [(317, 290), "Rotation", 1])
             Texthelper.write(screen, [(500,185), "or", 3])
 
-            # arrow key block (no positioner)
-            pygame.draw.rect(screen, (255,255,255), [640*scalarscalar, 230*scalarscalar, blockdim1, blockdim1], thickness) 
-            pygame.draw.polygon(screen, (255,255,255), [(660*scalarscalar,280*scalarscalar),(720*scalarscalar,250*scalarscalar),(720*scalarscalar,310*scalarscalar)], 0) 
+            # arrow key block
+            draw.rect(screen, (255,255,255), [640, 230, 100, 100], 5)            
+            draw.polygon(screen, (255,255,255), [(660,280),(720,250),(720,310)])            
             Texthelper.write(screen, [(670,340), "Left", 1])
-            Texthelper.write(screen, [(647,360), "Rotation", 1])   
-            pygame.draw.rect(screen, (255,255,255), [770*scalarscalar, 100*scalarscalar, 100*scalarscalar, 100*scalarscalar], thickness) 
-            pygame.draw.polygon(screen, (255,255,255), [(820*scalarscalar,120*scalarscalar),(850*scalarscalar,180*scalarscalar),(790*scalarscalar,180*scalarscalar)], 0) 
-            Texthelper.write(screen, [(783,78), "Forward", 1]) 
-            pygame.draw.rect(screen, (255,255,255), [770*scalarscalar, 230*scalarscalar, blockdim1, blockdim1], thickness)
-            pygame.draw.polygon(screen, (255,255,255), [(820*scalarscalar,310*scalarscalar),(850*scalarscalar,250*scalarscalar),(790*scalarscalar,250*scalarscalar)], 0)
-            pygame.draw.rect(screen, (255,255,255), [900*scalarscalar, 230*scalarscalar, blockdim1, blockdim1], thickness)
-            pygame.draw.polygon(screen, (255,255,255), [(980*scalarscalar,280*scalarscalar),(920*scalarscalar,250*scalarscalar),(920*scalarscalar,310*scalarscalar)], 0)
-            Texthelper.write(screen, [(924,340), "Right", 1])
+            Texthelper.write(screen, [(647,360), "Rotation", 1])
+            draw.rect(screen, (255,255,255), [770, 100, 100, 100], 5)            
+            draw.polygon(screen, (255,255,255), [(820,120),(850,180),(790,180)])            
+            Texthelper.write(screen, [(783,78), "Forward", 1])
+            draw.rect(screen, (255,255,255), [770, 230, 100, 100], 5)
+            draw.polygon(screen, (255,255,255), [[820,310], [850,250], [790,250]])            
+            draw.rect(screen, (255,255,255), [900, 230, 100, 100], 5)
+            draw.polygon(screen, (255,255,255), [[980,280], [920,250], [920,310]])            
+            Texthelper.write(screen, [(924,340), "Right", 1])        
             Texthelper.write(screen, [(907,360), "Rotation", 1])
-
             Texthelper.write(screen, [(1080,185), "to move", 3])
 
             # row 2 - firing block
-            temp_3 = (140, 450) # positions block
-            temp_32 = (temp_3[0]*scalarscalar, temp_3[1]*scalarscalar)
-            pygame.draw.rect(screen, (255,255,255), [temp_32[0], temp_32[1], 7*blockdim1, blockdim1], thickness)
-            Texthelper.write(screen, [(temp_3[0]+298, temp_3[1]+38), "space", 2])
-            Texthelper.write(screen, [(temp_3[0]+800, temp_3[1]+30), "to fire", 3])
+            draw.rect(screen, (255,255,255), [140, 450, 700, 100], 5)
+            Texthelper.write(screen, [(440, 490), "space", 2])
+            Texthelper.write(screen, [(940, 480), "to fire", 3])
 
             # row 3 - pausing block
-            temp_4 = (290, 630) #positions block
-            temp_42 = (temp_4[0]*scalarscalar, temp_4[1]*scalarscalar)
-            pygame.draw.rect(screen, (255,255,255), [temp_42[0], temp_42[1], blockdim1, blockdim1], thickness)
-            Texthelper.write(screen, [(temp_4[0]+8, temp_4[1]+33.2), "esc", 2.8])
-            Texthelper.write(screen, [(temp_4[0]+180, temp_4[1]+32), "or", 3])
-            pygame.draw.rect(screen, (255,255,255), [temp_42[0]+312*scalarscalar, temp_42[1], blockdim1, blockdim1], thickness) 
-            Texthelper.write(screen, [(temp_4[0]+342, temp_4[1]+20), "P", 5])
-            Texthelper.write(screen, [(temp_4[0]+484, temp_4[1]+32), "to pause", 3])
+            draw.rect(screen, (255,255,255), [290, 630, 100, 100], 5)
+            Texthelper.write(screen, [(300, 660), "esc", 2.8])
+            Texthelper.write(screen, [(470, 660), "or", 3])
+            draw.rect(screen, (255,255,255), [600, 630, 100, 100], 5)
+            Texthelper.write(screen, [(630, 650), "P", 5])        
+            Texthelper.write(screen, [(775, 660), "to pause", 3])
 
             # back button
-            text_input = [(20, 20), "Back", 3]
-            if Texthelper.writeButton(screen, text_input) == True:
+            if Texthelper.writeButton(screen, [("left+20", 20), "Back", 3]):
                 status = "menuinit"
 
             pygame.display.flip()
