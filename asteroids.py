@@ -88,17 +88,19 @@ def objecthandler(object_list, width, height):
             object_list[1 + (i * 8)] -= object_list[3 + (i * 8)]
     return object_list
 
+#particle settings
+particle_lifespan = 80
+lifespan_deviation = 20
+random_factor = 30 # higher number = less random
+max_particles = 6
+max_deviation = 2
 
 def particlemaker(xpos, ypos, xmom, ymom):
-    # particle settings
-    particle_lifespan = 45
-    random_factor = 30 # higher number = less random
-    max_particles = 6
-    max_deviation = 2
-    # particle settings
     printerlist_add = []
     for i in range(random.randint(max_particles - max_deviation, max_particles)):
-        printerlist_add += [xpos, ypos, xmom + ((random.randint(-20, 20))/random_factor), ymom + ((random.randint(-20, 20))/random_factor), 4, "N/A", particle_lifespan, True]      
+        lifespan = random.randint(particle_lifespan - lifespan_deviation, particle_lifespan + lifespan_deviation)
+        vector = (xmom + random.randint(-20, 20)/random_factor, ymom + random.randint(-20, 20)/random_factor)
+        printerlist_add += [xpos, ypos, *vector, 4, "N/A", lifespan, True]      
     return printerlist_add
 
 def asteroidspeedmaker(max_asteroid_spd):
@@ -131,7 +133,6 @@ def explosion_sounds():
         explosion1.play()
     else:
         explosion2.play()
-
 
 def score_printer(high_scores, high_initials):
     for i in range(len(high_initials)):
