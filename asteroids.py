@@ -959,9 +959,10 @@ def main():
                 raise SystemExit
 
 
-#checks if it needs to run setupper
-if filehelper.get(0)[0] == "?":
-    import setupper
-    setupper.setup()
-    
-main()
+if __name__ == "__main__":
+    #checks if it needs to run setupper
+    if filehelper.get(0)[0] == "?":
+        import setupper
+        setupper.setup()
+
+    main()
